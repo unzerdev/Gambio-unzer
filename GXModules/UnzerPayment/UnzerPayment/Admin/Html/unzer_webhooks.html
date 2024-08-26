@@ -1,0 +1,68 @@
+{extends file="get_usermod:layouts/main/layout.html"}
+
+{block name="content"}
+    {load_language_text section="unzer"}
+    <div class="row unzer-intro-container">
+        <div class="col-xs-4 col-sm-4 col-md-2">
+            <img src="{$content.urls.logo}" alt="{$txt.UNZER_WEBHOOKS_TITLE}" class="img-responsive"/>
+        </div>
+        <div class="col-xs-8 col-sm-8 col-md-10 unzer-intro-text">
+            <div class="unzer-intro-text-inner">
+                {$txt.UNZER_WEBHOOKS_INTRO}
+            </div>
+        </div>
+    </div>
+    <div id="unzer-webhook-container" class="unzer-webhook-container">
+        {if $content.isRegistered}
+            <div class="alert alert-success">
+                {$txt.UNZER_WEBHOOKS_REGISTERED}
+            </div>
+        {else}
+            <div class="alert alert-danger">
+                <form method="POST" action="{$content.urls.webhookAdd}">
+                    <div style="margin-bottom:10px;">
+                        {$txt.UNZER_WEBHOOKS_NOT_REGISTERED}
+                    </div>
+                    <button type="submit" class="btn btn-primary">{$txt.UNZER_WEBHOOKS_REGISTER}</button>
+                </form>
+            </div>
+        {/if}
+        <table id="unzer-webhooks<?php echo esc_attr( $slug ); ?>" style="width: 100%; max-width:800px;" cellspacing="0" class="unzer-webhooks table">
+            <thead style="text-align: left;">
+            <th style="width:15%;">
+                ID
+            </th>
+            <th style="width:5%;">
+                Event
+            </th>
+            <th style="width:75%;">
+                URL
+            </th>
+            <th style="width:5%;">
+
+            </th>
+            </thead>
+            <tbody id="unzer-webhooks-body">
+            {foreach $content.webhooks as $webhook}
+                <tr>
+                    <td>
+                        {$webhook.id}
+                    </td>
+                    <td>
+                        {$webhook.event}
+                    </td>
+                    <td>
+                        {$webhook.url}
+                    </td>
+                    <td>
+                        <form method="POST" action="{$content.urls.webhookDelete}">
+                            <input type="hidden" name="webhookId" value="{$webhook.id}">
+                            <button type="submit" class="btn btn-danger">{$txt.UNZER_WEBHOOKS_DELETE}</button>
+                        </form>
+                    </td>
+                </tr>
+            {/foreach}
+            </tbody>
+        </table>
+    </div>
+{/block}

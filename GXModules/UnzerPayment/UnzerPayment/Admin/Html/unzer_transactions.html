@@ -1,0 +1,108 @@
+{block name="unzer_transactions"}
+    {load_language_text section="unzer"}
+    {block name="unzer_transactions_head"}
+        {if $payment}
+            <div class="meta-infos">
+                <div class="item">
+                    <i class="fa fa-hashtag"></i>
+                    <div class="value"> {$payment->getInitialTransaction()->getShortId()} </div>
+                </div>
+                <div class="item">
+                    <i class="fa fa-fingerprint"></i>
+                    <div class="value"> {$payment->getId()} </div>
+                </div>
+                <div class="item">
+                    <i class="fa fa-info"></i>
+                    <div class="value unzer-payment-method-name"> {$paymentMethodLabel} </div>
+                </div>
+
+                <div class="item">
+                    <i class="fa fa-money"></i>
+                    <div class="value">{$payment->getAmount()->getTotal()|number_format:2:',':'.'} {$payment->getCurrency()}</div>
+                </div>
+
+                <div class="item">
+                    <i class="fa fa-flag-o"></i>
+                    <div class="value">{$paymentStateName} </div>
+                </div>
+            </div>
+        {/if}
+        <h2 style="margin-top:15px;">{$txt.UNZER_OVERVIEW}</h2>
+        <table style="width: auto;">
+            <tr>
+                <td>
+                    {$txt.UNZER_AMOUNT_REMAINING}
+                </td>
+                <td>
+                    {$payment->getAmount()->getRemaining()|number_format:2:',':'.'} {$payment->getCurrency()}
+                </td>
+                <td>
+
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    {$txt.UNZER_AMOUNT_CAPTURED}
+                </td>
+                <td>
+                    {$payment->getAmount()->getCharged()|number_format:2:',':'.'} {$payment->getCurrency()}
+                </td>
+                <td>
+                    {if $amountChargeable}
+                        <div class="action-group" data-action="capture">
+                            <input type="number" step="0.01" min="0" class="form-control" max="{$amountChargeable}" value="{$amountChargeable}"/>
+                            <button class="button">{$txt.UNZER_DO_CAPTURE}</button>
+                        </div>
+                    {/if}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    {$txt.UNZER_AMOUNT_REFUNDED}
+                </td>
+                <td>
+                    {$payment->getAmount()->getCanceled()|number_format:2:',':'.'} {$payment->getCurrency()}
+                </td>
+                <td>
+                    {if $amountRefundable}
+                        <div class="action-group" data-action="refund">
+                            <input type="number" step="0.01" min="0" class="form-control" max="{$amountRefundable}" value="{$amountRefundable}"/>
+                            <button class="button">{$txt.UNZER_DO_REFUND}</button>
+                        </div>
+                    {/if}
+                </td>
+            </tr>
+        </table>
+
+
+    {/block}
+    {block name="unzer_transactions_table"}
+        <h2 style="margin-top:15px;">{$txt.UNZER_TRANSACTIONS}</h2>
+        <table>
+            <thead>
+
+            </thead>
+            <tbody>
+            {foreach from=$transactions item=transaction}
+                <tr class="transaction-row-{$transaction.type} transaction-status-{$transaction.status}">
+                    <td>
+                        {$transaction.id}
+                    </td>
+                    <td>
+                        {$transaction.type}
+                    </td>
+                    <td class="amount">
+                        {$transaction.amount}
+                    </td>
+                    <td>
+                        {$transaction.time}
+                    </td>
+                    <td>
+                        {$transaction.status}
+                    </td>
+                </tr>
+            {/foreach}
+            </tbody>
+        </table>
+    {/block}
+{/block}

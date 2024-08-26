@@ -1,0 +1,71 @@
+{extends file="get_usermod:layouts/main/layout.html"}
+
+{block name="content"}
+    {load_language_text section="unzer"}
+    <div class="row unzer-intro-container">
+        <div class="col-xs-4 col-sm-4 col-md-2">
+            <img src="{$content.urls.logo}" alt="{$txt.UNZER_CONFIGURATION_TITLE}" class="img-responsive"/>
+        </div>
+        <div class="col-xs-8 col-sm-8 col-md-10 unzer-intro-text">
+            <div class="unzer-intro-text-inner">
+                {$txt.UNZER_CONFIGURATION_INTRO}
+            </div>
+        </div>
+    </div>
+    {function name=writeConfigurationInputFieldInner fieldName="" paymentMethod="" type="text" readonly=0 value=''}
+        {if $type == 'text'}
+            <input type="{$type}" {if $readonly}readonly{/if} id="{$paymentMethod}_{$fieldName}_input" class="form-control" name="configuration[{$paymentMethod}][{$fieldName}]" value="{$value}"/>
+        {elseif $type == 'textarea'}
+            <textarea id="{$paymentMethod}_{$fieldName}_input" {if $readonly}readonly{/if} class="form-control" name="configuration[{$paymentMethod}][{$fieldName}]">{$value}</textarea>
+        {elseif $type == 'select'}
+            <select class="form-control" id="{$paymentMethod}_{$fieldName}_input" name="configuration[{$paymentMethod}][{$fieldName}]">
+                {foreach from=$options item=option}
+                    <option value="{$option.value}" {if $option.value == $value}selected="selected"{/if} >{$option.label}</option>
+                {/foreach}
+            </select>
+        {elseif $type == 'bool'}
+            <input type="hidden" name="configuration[{$paymentMethod}][{$fieldName}]" value="0"/>
+            <input type="checkbox" id="{$paymentMethod}_{$fieldName}_input" value="1" name="configuration[{$paymentMethod}][{$fieldName}]" class="form-control" {if $value == '1'}checked="checked"{/if}/>
+        {/if}
+    {/function}
+    <form action="{$content.urls.saveConfiguration}" data-load-url="{$content.urls.getConfiguration}" method="POST" class="form-configuration unzer-configuration" id="unzer-configuration-form">
+        <input type="hidden" name="page_token" value="{$pageToken}">
+        <div class="form-horizontal">
+            <fieldset>
+                <legend>{$txt.UNZER_CONFIGURATION_PAYMENT_METHODS_HEADING}</legend>
+                <div class="group-intro">
+                    {$txt.UNZER_CONFIGURATION_PAYMENT_METHODS_INTRO}
+                </div>
+                {foreach $content.paymentMethods as $paymentMethod}
+                    <div class="form-group row">
+                        <label class="col-sm-4" for="{$paymentMethod.originalCode}_input">
+                            <div style="width: 42px; display:inline-block;">
+                                <img src="{$paymentMethod.logo_url}" style="max-height:24px;max-width:36px;" alt=""/></div>
+                            {$paymentMethod.module}
+                        </label>
+                        <div class="col-sm-2">
+                            <div data-gx-widget="switcher">
+                                {if $content.currentConfig[$paymentMethod.originalCode].status == '0'}
+                                    {assign var="status" value="0"}
+                                {else}
+                                    {assign var="status" value="1"}
+                                {/if}
+                                {writeConfigurationInputFieldInner paymentMethod=$paymentMethod.originalCode fieldName="status" value=$status type="bool"}
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            {if $paymentMethod.canAuthorize}
+                                {writeConfigurationInputFieldInner paymentMethod=$paymentMethod.originalCode fieldName="transactionType" value=$content.currentConfig[$paymentMethod.originalCode].transactionType  type="select" options=$content.options.transactionTypes}
+                            {/if}
+                        </div>
+                    </div>
+                {/foreach}
+            </fieldset>
+
+
+        </div>
+        <div class="col-sm-12">
+            <button type="submit" class="btn btn-primary pull-right">{$txt.UNZER_CONFIGURATION_SAVE}</button>
+        </div>
+    </form>
+{/block}

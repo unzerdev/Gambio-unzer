@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="980px" height="680px" viewBox="0 0 980 680" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>CH TWINT</title>
+    <defs>
+        <rect id="path-1" x="2.84217094e-14" y="0" width="900" height="600" rx="80"></rect>
+        <filter x="-6.7%" y="-10.0%" width="113.3%" height="120.0%" filterUnits="objectBoundingBox" id="filter-2">
+            <feMorphology radius="2.5" operator="dilate" in="SourceAlpha" result="shadowSpreadOuter1"></feMorphology>
+            <feOffset dx="0" dy="0" in="shadowSpreadOuter1" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="17.5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.5 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+        <radialGradient cx="22.45%" cy="8.76%" fx="22.45%" fy="8.76%" r="113.287%" gradientTransform="translate(0.2245, 0.0876), scale(1, 0.8859), translate(-0.2245, -0.0876)" id="radialGradient-3">
+            <stop stop-color="#FFCC00" offset="0%"></stop>
+            <stop stop-color="#FFC800" offset="9.157%"></stop>
+            <stop stop-color="#FFBD00" offset="17.39%"></stop>
+            <stop stop-color="#FFAB00" offset="25.28%"></stop>
+            <stop stop-color="#FF9100" offset="32.95%"></stop>
+            <stop stop-color="#FF7000" offset="40.46%"></stop>
+            <stop stop-color="#FF4700" offset="47.86%"></stop>
+            <stop stop-color="#FF1800" offset="55.03%"></stop>
+            <stop stop-color="#FF0000" offset="58.22%"></stop>
+            <stop stop-color="#FF0000" offset="100%"></stop>
+        </radialGradient>
+        <radialGradient cx="2.431%" cy="14.525%" fx="2.431%" fy="14.525%" r="139.175%" gradientTransform="translate(0.0243, 0.1453), scale(1, 0.6605), translate(-0.0243, -0.1453)" id="radialGradient-4">
+            <stop stop-color="#00B4E6" offset="0%"></stop>
+            <stop stop-color="#00B0E3" offset="20.1%"></stop>
+            <stop stop-color="#01A5DB" offset="38.98%"></stop>
+            <stop stop-color="#0292CD" offset="57.37%"></stop>
+            <stop stop-color="#0377BA" offset="75.46%"></stop>
+            <stop stop-color="#0455A1" offset="93.16%"></stop>
+            <stop stop-color="#054696" offset="100%"></stop>
+        </radialGradient>
+    </defs>
+    <g id="CH-TWINT" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g transform="translate(40, 40)">
+            <g id="Rectangle">
+                <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                <use fill="#000000" fill-rule="evenodd" xlink:href="#path-1"></use>
+            </g>
+            <g id="Logo" transform="translate(230.6457, 49.9071)" fill-rule="nonzero">
+                <g id="Group">
+                    <path d="M438.6638,364.966099 C438.6638,371.470702 434.055454,379.342374 428.377708,382.594675 L229.623505,497.560774 C223.934733,500.813075 214.729067,500.813075 209.040295,497.560774 L10.2860923,382.594675 C4.59732099,379.342374 0,371.481726 0,364.966099 L0,135.033901 C0,128.529298 4.60834574,120.657626 10.2860923,117.405325 L209.040295,2.43922606 C214.729067,-0.813075354 223.934733,-0.813075354 229.623505,2.43922606 L428.377708,117.405325 C434.066479,120.657626 438.6638,128.518274 438.6638,135.033901 L438.6638,364.966099 L438.6638,364.966099 Z" id="Shape1" fill="#FFFFFF"></path>
+                    <path d="M323.036216,250.540213 L271.043493,326.732264 L244.506918,286.061959 L275.100601,240.243096 C280.789372,232.10683 292.971722,209.605314 278.893115,178.967532 C267.515572,154.018522 242.875255,142.089741 221.21162,142.089741 C199.547985,142.089741 175.988093,153.20269 163.265531,178.967532 C148.911306,208.524888 161.369274,231.566617 166.782427,239.438289 C166.782427,239.438289 183.837716,264.387299 197.927347,285.532771 L220.947026,318.882642 L255.608842,372.032964 C255.884461,372.308583 261.297613,380.709443 271.043493,380.709443 C280.249159,380.709443 285.937931,372.308583 286.753762,371.492751 L367.984124,251.102475 L323.036216,251.102475 L323.036216,250.562262 L323.036216,250.540213 Z M220.947026,252.43647 C220.947026,252.43647 207.408632,231.831211 198.46756,217.454936 C188.986274,201.998236 199.547985,178.956507 220.947026,178.956507 C242.335042,178.956507 252.896753,202.009261 243.426492,217.454936 C234.761039,231.831211 220.947026,252.43647 220.947026,252.43647 Z" id="Shape2" fill="url(#radialGradient-3)"></path>
+                    <path d="M171.126178,324.295794 L120.21388,252.712089 C120.21388,252.712089 106.675486,232.10683 97.7344138,217.730555 C88.2531283,202.273855 98.8148393,179.232126 120.21388,179.232126 C122.925969,179.232126 125.362439,179.507745 127.798909,180.312552 L145.670029,147.502894 C137.544788,143.974974 128.61474,142.078717 120.489499,142.078717 C98.8258641,142.078717 75.2659721,153.191665 62.54341,178.956507 C48.1891847,208.513864 60.6471529,231.555592 66.0603054,239.427264 L155.151315,371.481726 C155.967146,372.562152 161.644893,380.974037 171.126178,380.974037 C180.607464,380.974037 186.020616,372.837771 186.836448,371.757345 L213.648641,330.811422 L190.628962,296.921338 L171.137203,324.306819 L171.126178,324.295794 Z" id="Path" fill="url(#radialGradient-4)"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
