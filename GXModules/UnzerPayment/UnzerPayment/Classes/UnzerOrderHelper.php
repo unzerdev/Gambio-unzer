@@ -38,7 +38,7 @@ class UnzerOrderHelper
             ->setAdditionalAttribute('riskData.registrationLevel', $isCustomerRegistered ? '1' : '0')
             ->setAdditionalAttribute('riskData.registrationDate', $this->getCustomersRegistrationDate((int)$order->customer['id']));
 
-        if(!$isCustomerRegistered){
+        if (!$isCustomerRegistered) {
             $payPage->setAdditionalAttribute('disabledCOF', 'card,paypal,sepa-direct-debit');
         }
 
@@ -79,10 +79,6 @@ class UnzerOrderHelper
             ->setShopVersion(gm_get_conf('INSTALLED_VERSION'))
             ->addMetadata('pluginType', UnzerConstants::META_DATA_PLUGIN_TYPE)
             ->addMetadata('pluginVersion', UnzerConstants::MODULE_VERSION);
-
-        if ($orderId !== null) {
-            $metaData->addMetadata('orderId', $orderId);
-        }
         return $metaData;
     }
 
@@ -100,7 +96,7 @@ class UnzerOrderHelper
                 ->setTitle($orderItem['name'])
                 ->setQuantity($orderItem['qty'])
                 ->setType(BasketItemTypes::GOODS)
-                ->setAmountPerUnitGross($orderItem['price'])
+                ->setAmountPerUnitGross(round($orderItem['price'], 2))
                 ->setVat($orderItem['tax']);
             $basketItems[] = $basketItem;
         }
@@ -110,7 +106,7 @@ class UnzerOrderHelper
                 ->setTitle($order->info['shipping_method'])
                 ->setQuantity(1)
                 ->setType(BasketItemTypes::SHIPMENT)
-                ->setAmountPerUnitGross($order->info['pp_shipping'])
+                ->setAmountPerUnitGross(round($order->info['pp_shipping'], 2))
                 ->setVat(0);
             $basketItems[] = $basketItem;
         }
@@ -122,19 +118,19 @@ class UnzerOrderHelper
                 ->setTitle($r['coupon_code'])
                 ->setQuantity(1)
                 ->setType(BasketItemTypes::VOUCHER)
-                ->setAmountDiscountPerUnitGross(abs($r['amount']))
+                ->setAmountDiscountPerUnitGross(round(abs($r['amount']), 2))
                 ->setVat(0);
             $basketItems[] = $basketItem;
         }
 
-$q = "SELECT * FROM " . TABLE_ORDERS_TOTAL . " WHERE orders_id = " . (int)$order->info['orders_id'] . " AND class = 'ot_coupon'";
+        $q = "SELECT * FROM " . TABLE_ORDERS_TOTAL . " WHERE orders_id = " . (int)$order->info['orders_id'] . " AND class = 'ot_coupon'";
         $rs = xtc_db_query($q);
         if ($r = xtc_db_fetch_array($rs)) {
             $basketItem = (new BasketItem())
                 ->setTitle(trim($r['title'], ':'))
                 ->setQuantity(1)
                 ->setType(BasketItemTypes::VOUCHER)
-                ->setAmountDiscountPerUnitGross(abs($r['value']))
+                ->setAmountDiscountPerUnitGross(round(abs($r['value']), 2))
                 ->setVat(0);
             $basketItems[] = $basketItem;
         }
@@ -152,7 +148,7 @@ $q = "SELECT * FROM " . TABLE_ORDERS_TOTAL . " WHERE orders_id = " . (int)$order
                     ->setTitle('---')
                     ->setQuantity(1)
                     ->setType(BasketItemTypes::VOUCHER)
-                    ->setAmountDiscountPerUnitGross(round($totalLeft * -1, 2))
+                    ->setAmountDiscountPerUnitGross(round(abs($totalLeft), 2))
                     ->setVat(0);
                 $basketItems[] = $basketItem;
             } else {
@@ -290,7 +286,7 @@ $q = "SELECT * FROM " . TABLE_ORDERS_TOTAL . " WHERE orders_id = " . (int)$order
         xtc_db_perform(TABLE_ORDERS, [
             UnzerConstants::ORDER_TABLE_PAYMENT_ID_COLUMN => $paymentId,
             UnzerConstants::ORDER_TABLE_PAYMENT_METHOD_COLUMN => $paymentMethod,
-            UnzerConstants::ORDER_TABLE_PAYMENT_METHOD_LABEL_COLUMN => UnzerConfigHelper::getPaymentMethodName($paymentMethod) ?: $paymentMethod
+            UnzerConstants::ORDER_TABLE_PAYMENT_METHOD_LABEL_COLUMN => UnzerConfigHelper::getPaymentMethodName($paymentMethod) ?: $paymentMethod,
         ], 'update', 'orders_id = ' . (int)$orderId);
     }
 
@@ -300,6 +296,14 @@ $q = "SELECT * FROM " . TABLE_ORDERS_TOTAL . " WHERE orders_id = " . (int)$order
         $rs = xtc_db_query($q);
         $r = xtc_db_fetch_array($rs);
         return (string)$r[UnzerConstants::ORDER_TABLE_PAYMENT_METHOD_LABEL_COLUMN];
+    }
+
+    public function getUnzerPaymentMethodCodeFromOrderId(int $orderId): string
+    {
+        $q = "SELECT " . UnzerConstants::ORDER_TABLE_PAYMENT_METHOD_COLUMN . " FROM " . TABLE_ORDERS . " WHERE orders_id = " . $orderId;
+        $rs = xtc_db_query($q);
+        $r = xtc_db_fetch_array($rs);
+        return (string)$r[UnzerConstants::ORDER_TABLE_PAYMENT_METHOD_COLUMN];
     }
 
     public function getOrderIdFromPaymentId(string $paymentId): ?int
@@ -404,31 +408,31 @@ $q = "SELECT * FROM " . TABLE_ORDERS_TOTAL . " WHERE orders_id = " . (int)$order
     {
         $q = "SELECT customers_date_added FROM " . TABLE_CUSTOMERS . " WHERE customers_id = " . $customerId;
         $rs = xtc_db_query($q);
-        if($r = xtc_db_fetch_array($rs)){
+        if ($r = xtc_db_fetch_array($rs)) {
             return $r['customers_date_added'];
         } else {
             return null;
         }
     }
 
-    public function listenToOrderStatusChange(IdType $orderId, IntType $newOrderStatusId):void
+    public function listenToOrderStatusChange(IdType $orderId, IntType $newOrderStatusId): void
     {
-        if($orderStatusToTriggerCapture = UnzerConfigHelper::getConstant('MODULE_PAYMENT_UNZER_ORDER_STATUS_ID_TRIGGER_CAPTURE')){
-           if($newOrderStatusId->asInt() === (int)$orderStatusToTriggerCapture){
-               $this->triggerCaptureOnOrder($orderId->asInt());
-           }
+        if ($orderStatusToTriggerCapture = UnzerConfigHelper::getConstant('MODULE_PAYMENT_UNZER_ORDER_STATUS_ID_TRIGGER_CAPTURE')) {
+            if ($newOrderStatusId->asInt() === (int)$orderStatusToTriggerCapture) {
+                $this->triggerCaptureOnOrder($orderId->asInt());
+            }
         }
-        if($orderStatusToTriggerRefund = UnzerConfigHelper::getConstant('MODULE_PAYMENT_UNZER_ORDER_STATUS_ID_TRIGGER_REFUND')){
-            if($newOrderStatusId->asInt() === (int)$orderStatusToTriggerRefund){
+        if ($orderStatusToTriggerRefund = UnzerConfigHelper::getConstant('MODULE_PAYMENT_UNZER_ORDER_STATUS_ID_TRIGGER_REFUND')) {
+            if ($newOrderStatusId->asInt() === (int)$orderStatusToTriggerRefund) {
                 $this->triggerRefundOnOrder($orderId->asInt());
             }
         }
     }
 
-    public function triggerCaptureOnOrder(int $orderId):void
+    public function triggerCaptureOnOrder(int $orderId): void
     {
         $paymentId = $this->getPaymentIdFromOrderId($orderId);
-        if(!$paymentId){
+        if (!$paymentId) {
             $this->logger->warning('triggerCaptureOnOrder: paymentId not found', ['orderId' => $orderId]);
             return;
         }
@@ -436,7 +440,7 @@ $q = "SELECT * FROM " . TABLE_ORDERS_TOTAL . " WHERE orders_id = " . (int)$order
         try {
             $payment = $this->unzer->fetchPayment($paymentId);
             $payment->charge();
-            if($payment->isCompleted()) {
+            if ($payment->isCompleted()) {
                 $this->setOrderStatusCaptured($orderId, 'Unzer');
             }
         } catch (Exception $e) {
@@ -444,10 +448,10 @@ $q = "SELECT * FROM " . TABLE_ORDERS_TOTAL . " WHERE orders_id = " . (int)$order
         }
     }
 
-    public function triggerRefundOnOrder(int $orderId):void
+    public function triggerRefundOnOrder(int $orderId): void
     {
         $paymentId = $this->getPaymentIdFromOrderId($orderId);
-        if(!$paymentId){
+        if (!$paymentId) {
             $this->logger->warning('triggerRefundOnOrder: paymentId not found', ['orderId' => $orderId]);
             return;
         }
@@ -455,7 +459,7 @@ $q = "SELECT * FROM " . TABLE_ORDERS_TOTAL . " WHERE orders_id = " . (int)$order
         try {
             $payment = $this->unzer->fetchPayment($paymentId);
             $payment->cancelAmount();
-            if($payment->isCanceled()) {
+            if ($payment->isCanceled()) {
                 $this->setOrderStatusRefunded($orderId, 'Unzer');
             }
         } catch (Exception $e) {

@@ -77,6 +77,7 @@ $t_language_text_section_content_array = [
     //transaction
     'UNZER_DO_REFUND'=>'Refund amount',
     'UNZER_DO_CAPTURE'=>'Capture amount',
+    'UNZER_DO_CANCEL'=>'Cancel payment',
     'UNZER_TRANSACTIONS'=>'Transactions',
     'UNZER_OVERVIEW'=>'Overview',
     'UNZER_AMOUNT_REMAINING'=>'Amount remaining',

@@ -11,5 +11,11 @@ Unzer payment integration for Gambio 4.9.x
 
 ## Changelog
 
+# v1.0.1
+* Prevent indefinite status setting/triggering
+* Metadata: remove orderId
+* Fix rounding error
+* Transfer details in Frontend
+
 # v1.0.0
 * Initial release
