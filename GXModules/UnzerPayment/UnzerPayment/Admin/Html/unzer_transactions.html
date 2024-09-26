@@ -37,7 +37,12 @@
                     {$payment->getAmount()->getRemaining()|number_format:2:',':'.'} {$payment->getCurrency()}
                 </td>
                 <td>
-
+                    {if $payment->getAmount()->getRemaining() && !$payment->getAmount()->getCharged()}
+                        <div class="action-group" data-action="refund">
+                            <input type="hidden" step="0.01" min="0" class="form-control" max="{$payment->getAmount()->getRemaining()}" value="{$payment->getAmount()->getRemaining()}"/>
+                            <button class="button">{$txt.UNZER_DO_CANCEL}</button>
+                        </div>
+                    {/if}
                 </td>
             </tr>
             <tr>
@@ -48,7 +53,7 @@
                     {$payment->getAmount()->getCharged()|number_format:2:',':'.'} {$payment->getCurrency()}
                 </td>
                 <td>
-                    {if $amountChargeable}
+                    {if $amountChargeable && $paymentMethodCode !== 'prepayment'}
                         <div class="action-group" data-action="capture">
                             <input type="number" step="0.01" min="0" class="form-control" max="{$amountChargeable}" value="{$amountChargeable}"/>
                             <button class="button">{$txt.UNZER_DO_CAPTURE}</button>
@@ -73,9 +78,16 @@
                 </td>
             </tr>
         </table>
-
-
     {/block}
+
+    {block name="unzer_payment_instructions"}
+        {if $payment_instructions}
+            <div style="margin:10px 0">
+                {$payment_instructions|unescape: "html" nofilter}
+            </div>
+        {/if}
+    {/block}
+
     {block name="unzer_transactions_table"}
         <h2 style="margin-top:15px;">{$txt.UNZER_TRANSACTIONS}</h2>
         <table>

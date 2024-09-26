@@ -9,7 +9,7 @@ class UnzerConstants {
     const ORDER_TABLE_PAYMENT_METHOD_COLUMN = 'unzer_payment_method';
     const ORDER_TABLE_PAYMENT_METHOD_LABEL_COLUMN = 'unzer_payment_method_label';
     const DISABLED_PAYMENT_METHODS = ['giropay', 'PIS', 'bancontact'];
-    const MODULE_VERSION = '1.0.0';
+    const MODULE_VERSION = '1.0.1';
 
     const LOG_LEVEL_DEBUG = 'debug';
     const LOG_LEVEL_ERROR = 'error';

@@ -8,7 +8,8 @@ use UnzerSDK\Resources\TransactionTypes\Charge;
 
 class UnzerTransactionsController extends AdminHttpViewController
 {
-    protected function init(){
+    protected function init()
+    {
         UnzerConfigHelper::initTexts();
     }
 
@@ -31,6 +32,7 @@ class UnzerTransactionsController extends AdminHttpViewController
         $contentView->set_template_dir(UnzerConstants::MODULE_PATH_FS . 'Admin/Html/');
         $contentView->set_content_template('unzer_transactions.html');
         $contentView->set_content_data('paymentMethodLabel', $orderHelper->getUnzerPaymentMethodNameFromOrderId($orderId));
+        $contentView->set_content_data('paymentMethodCode', $orderHelper->getUnzerPaymentMethodCodeFromOrderId($orderId));
         $contentView->set_content_data('payment', $payment);
 
 
@@ -48,6 +50,11 @@ class UnzerTransactionsController extends AdminHttpViewController
         $contentView->set_content_data('transactions', $this->getTransactionArray($payment));
 
 
+        if ($instructions = $orderHelper->formatPaymentInstructions($payment)) {
+            $contentView->set_content_data('payment_instructions', '<div><b>' . UnzerConfigHelper::getStringConstant('UNZER_PAYMENT_INSTRUCTIONS') . '</b></div>' . nl2br($instructions));
+        }
+
+
         $html = $contentView->build_html();
 
         return MainFactory::create(
@@ -55,7 +62,7 @@ class UnzerTransactionsController extends AdminHttpViewController
             [
                 'success' => true,
                 'html' => $html,
-                'debug'=>preg_replace('/s\-priv\-[a-z0-9]+/i', '', print_r($payment, true))
+                'debug' => preg_replace('/s\-priv\-[a-z0-9]+/i', '', print_r($payment, true)),
             ]
         );
     }
@@ -103,9 +110,9 @@ class UnzerTransactionsController extends AdminHttpViewController
                 $return['time'] = $transaction->getDate();
 
                 if (method_exists($transaction, 'getAmount') && method_exists($transaction, 'getCurrency')) {
-                    $return['amount'] = number_format($transaction->getAmount(), 2).' '.$currency;
+                    $return['amount'] = number_format($transaction->getAmount(), 2) . ' ' . $currency;
                 } elseif (isset($return['amount'])) {
-                    $return['amount'] = number_format($return['amount'], 2).' '.$currency;
+                    $return['amount'] = number_format($return['amount'], 2) . ' ' . $currency;
                 }
                 $status = $transaction->isSuccess() ? 'success' : 'error';
                 $status = $transaction->isPending() ? 'pending' : $status;

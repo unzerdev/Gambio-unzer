@@ -1,0 +1,11 @@
+{block name="checkout_print_order_body_comment_if"}
+    {$smarty.block.parent}
+
+    {if $PAYMENT_INSTRUCTIONS}
+        <div class="payment-instructions" style="margin-top:20px;">
+            <font face="Verdana, Arial, Helvetica, sans-serif" size="1">
+                {$PAYMENT_INSTRUCTIONS}
+            </font>
+        </div>
+    {/if}
+{/block}

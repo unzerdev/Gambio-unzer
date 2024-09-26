@@ -142,8 +142,8 @@ final class unzer
         UnzerConfigHelper::createConfigValue('MODULE_PAYMENT_UNZER_ORDER_STATUS_ID_CAPTURED', '', 'order-status', '110');
         UnzerConfigHelper::createConfigValue('MODULE_PAYMENT_UNZER_ORDER_STATUS_ID_CHARGEBACK', '', 'order-status', '120');
         UnzerConfigHelper::createConfigValue('MODULE_PAYMENT_UNZER_ORDER_STATUS_ID_REFUNDED', '', 'order-status', '130');
-        UnzerConfigHelper::createConfigValue('MODULE_PAYMENT_UNZER_ORDER_STATUS_ID_TRIGGER_REFUND', '', 'order-status', '140');
-        UnzerConfigHelper::createConfigValue('MODULE_PAYMENT_UNZER_ORDER_STATUS_ID_TRIGGER_CAPTURE', '', 'order-status', '150');
+        UnzerConfigHelper::createConfigValue('MODULE_PAYMENT_UNZER_ORDER_STATUS_ID_TRIGGER_REFUND', '99', 'order-status', '140');
+        UnzerConfigHelper::createConfigValue('MODULE_PAYMENT_UNZER_ORDER_STATUS_ID_TRIGGER_CAPTURE', '3', 'order-status', '150');
 
         UnzerConfigHelper::createConfigValue('MODULE_PAYMENT_UNZER_ALLOWED', '', null, '140');
 
