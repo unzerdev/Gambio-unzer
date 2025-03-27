@@ -22,7 +22,7 @@ class UnzerOrderHelper
         $this->logger = new UnzerLogger();
     }
 
-    public function getUnzerPayPage(order_ORIGIN $order, ?string $selectedPaymentMethod = null)
+    public function getUnzerPayPage(order_ORIGIN $order, ?string $selectedPaymentMethod = null): Paypage
     {
         $basket = $this->getUnzerBasket($order);
         $customer = $this->getUnzerCustomer($order);
@@ -82,7 +82,7 @@ class UnzerOrderHelper
         return $metaData;
     }
 
-    public function getUnzerBasket(order_ORIGIN $order)
+    public function getUnzerBasket(order_ORIGIN $order): Basket
     {
         $basket = (new Basket())
             ->setTotalValueGross($order->info['pp_total'])
@@ -165,7 +165,7 @@ class UnzerOrderHelper
         return $basket;
     }
 
-    public function getUnzerCustomer(order_ORIGIN $order)
+    public function getUnzerCustomer(order_ORIGIN $order): Customer
     {
         $customerId = $order->customer['id'];
         try {
@@ -219,7 +219,7 @@ class UnzerOrderHelper
         }
     }
 
-    protected function setAddresses(Customer $customer, order_ORIGIN $order)
+    protected function setAddresses(Customer $customer, order_ORIGIN $order): void
     {
         $shippingType = ShippingTypes::EQUALS_BILLING;
         if ($order->delivery && xtc_address_format($order->billing['format_id'], $order->billing, false, '', '') !== xtc_address_format($order->delivery['format_id'], $order->delivery, false, '', '')) {
@@ -281,7 +281,7 @@ class UnzerOrderHelper
             new BoolType(false));
     }
 
-    public function writePaymentIdAndPaymentMethod(mixed $orderId, string $paymentId, string $paymentMethod = '')
+    public function writePaymentIdAndPaymentMethod(mixed $orderId, string $paymentId, string $paymentMethod = ''): void
     {
         xtc_db_perform(TABLE_ORDERS, [
             UnzerConstants::ORDER_TABLE_PAYMENT_ID_COLUMN => $paymentId,

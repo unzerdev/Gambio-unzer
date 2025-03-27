@@ -55,6 +55,7 @@ $t_language_text_section_content_array = [
     'MODULE_PAYMENT_UNZER_PAYMENT_METHOD_LABEL_INVOICE'=>'Rechnung',
     'MODULE_PAYMENT_UNZER_PAYMENT_METHOD_LABEL_INSTALLMENT-SECURED'=>'Ratenzahlung',
     'MODULE_PAYMENT_UNZER_PAYMENT_METHOD_LABEL_BANCONTACT'=>'Bancontact',
+    'MODULE_PAYMENT_UNZER_PAYMENT_METHOD_LABEL_OPENBANKING_PIS'=>'Direkt-Überweisung',
 
     //payment method configuration page
     'UNZER_CONFIGURATION_TITLE' => 'Unzer Zahlungsarten-Konfiguration',
