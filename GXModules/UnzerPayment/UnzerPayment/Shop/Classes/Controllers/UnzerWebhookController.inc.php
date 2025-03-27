@@ -4,8 +4,6 @@ use UnzerSDK\Constants\WebhookEvents;
 
 class UnzerWebhookController extends HttpViewController
 {
-    protected UnzerLogger $logger;
-
     const REGISTERED_EVENTS = [
         WebhookEvents::CHARGE_CANCELED,
         WebhookEvents::AUTHORIZE_CANCELED,
@@ -13,16 +11,11 @@ class UnzerWebhookController extends HttpViewController
         WebhookEvents::CHARGE_SUCCEEDED,
         WebhookEvents::PAYMENT_CHARGEBACK,
     ];
+
+    protected UnzerLogger $logger;
     protected UnzerOrderHelper $orderHelper;
     protected UnzerApiHelper $apiHelper;
 
-    /**
-     * CookieConsentPanelVendorListAjaxController constructor.
-     *
-     * @param HttpContextReaderInterface $httpContextReader
-     * @param HttpResponseProcessorInterface $httpResponseProcessor
-     * @param ContentViewInterface $defaultContentView
-     */
     public function __construct(
         HttpContextReaderInterface     $httpContextReader,
         HttpResponseProcessorInterface $httpResponseProcessor,
@@ -92,7 +85,7 @@ class UnzerWebhookController extends HttpViewController
         return $this->getJsonResponse(true, ['msg' => 'webhook processed']);
     }
 
-    public function handleChargeback($paymentId, $orderId)
+    private function handleChargeback($paymentId, $orderId)
     {
         $this->logger->debug(
             'webhook handleChargeback',

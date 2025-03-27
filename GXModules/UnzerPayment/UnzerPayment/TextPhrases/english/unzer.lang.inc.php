@@ -55,6 +55,7 @@ $t_language_text_section_content_array = [
     'MODULE_PAYMENT_UNZER_PAYMENT_METHOD_LABEL_INVOICE'=>'Invoice',
     'MODULE_PAYMENT_UNZER_PAYMENT_METHOD_LABEL_INSTALLMENT-SECURED'=>'Installment Secured',
     'MODULE_PAYMENT_UNZER_PAYMENT_METHOD_LABEL_BANCONTACT'=>'Bancontact',
+    'MODULE_PAYMENT_UNZER_PAYMENT_METHOD_LABEL_OPENBANKING_PIS'=>'Direct Bank Transfer',
 
     //payment method configuration page
     'UNZER_CONFIGURATION_TITLE' => 'Unzer Payment Methods Configuration',
