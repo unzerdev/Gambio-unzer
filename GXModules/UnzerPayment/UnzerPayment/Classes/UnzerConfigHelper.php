@@ -99,7 +99,11 @@ class UnzerConfigHelper
 
     public static function getPaymentMethodName(string $code): string
     {
-        return self::getStringConstant('MODULE_PAYMENT_UNZER_PAYMENT_METHOD_LABEL_' . str_replace('-', '_', strtoupper($code)));
+        $label = self::getStringConstant('MODULE_PAYMENT_UNZER_PAYMENT_METHOD_LABEL_' . str_replace('-', '_', strtoupper($code)));
+        if (trim($label) == '') {
+            return $code;
+        }
+        return $label;
     }
 
     public static function getWebhookUrl():string{

@@ -45,7 +45,7 @@ class UnzerCheckoutHelper
             $iconBasePath = 'GXModules/UnzerPayment/UnzerPayment/Assets/Icons/' . $code;
             if (file_exists(DIR_FS_CATALOG . $iconBasePath . '.svg')) {
                 $iconPath = DIR_WS_CATALOG . $iconBasePath . '.svg';
-            } elseif (file_exists($iconBasePath . '.png')) {
+            } elseif (file_exists(DIR_FS_CATALOG . $iconBasePath . '.png')) {
                 $iconPath = DIR_WS_CATALOG . $iconBasePath . '.png';
             } else {
                 $iconPath = '';

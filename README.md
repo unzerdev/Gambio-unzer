@@ -11,6 +11,10 @@ Unzer payment integration for Gambio 4.9.x
 
 ## Changelog
 
+# v1.0.3
+* Bugfix "getAvailablePaymentMethods" Method
+* Fix birthdate format
+
 # v1.0.2
 * Added Direct Bank Transfer
 * Upgraded PHP SDK to 3.11
