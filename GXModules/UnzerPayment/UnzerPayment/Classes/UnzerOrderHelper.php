@@ -409,7 +409,7 @@ class UnzerOrderHelper
         $q = "SELECT customers_date_added FROM " . TABLE_CUSTOMERS . " WHERE customers_id = " . $customerId;
         $rs = xtc_db_query($q);
         if ($r = xtc_db_fetch_array($rs)) {
-            return $r['customers_date_added'];
+            return date("Ymd", strtotime($r['customers_date_added']));
         } else {
             return null;
         }
