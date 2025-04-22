@@ -11,6 +11,9 @@ Unzer payment integration for Gambio 4.9.x
 
 ## Changelog
 
+# v1.1.0
+* Implementation and migration to Embedded Paypage V2
+
 # v1.0.3
 * Bugfix "getAvailablePaymentMethods" Method
 * Fix birthdate format

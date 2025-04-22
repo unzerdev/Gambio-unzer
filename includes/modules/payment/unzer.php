@@ -58,21 +58,28 @@ final class unzer
 
     public function before_process()
     {
-        if (!empty($_SESSION['unzer_payment_id']) && !empty($_SESSION['tmp_oID'])) {
+        if (!empty($_SESSION[UnzerConstants::SESSION_KEY_PAY_PAGE_ID]) && !empty($_SESSION['tmp_oID'])) {
             //this is a redirect from an unzer payment process
             $orderId = $_SESSION['tmp_oID'];
-            $paymentId = (string)$_SESSION['unzer_payment_id'];
+            $payPageId = (string)$_SESSION[UnzerConstants::SESSION_KEY_PAY_PAGE_ID];
 
             $unzerApiHelper = new UnzerApiHelper();
-            $payment = $unzerApiHelper->fetchPayment($paymentId);
-            if ($payment === null) {
+            $payPage = $unzerApiHelper->fetchPayPage($payPageId);
+            if ($payPage === null) {
                 UnzerCheckoutHelper::doErrorRedirect(UnzerConfigHelper::getStringConstant('UNZER_GENERIC_ERROR_MESSAGE'));
             }
+
+            if(!isset($payPage->getPayments()[0])){
+                UnzerCheckoutHelper::doErrorRedirect(UnzerConfigHelper::getStringConstant('UNZER_GENERIC_ERROR_MESSAGE'));
+            }
+            $payPagePayment = $payPage->getPayments()[0];
+            $payment = $unzerApiHelper->fetchPayment($payPagePayment->getPaymentId());
+
             if (!($payment->isPending() || $payment->isCompleted())) {
                 UnzerCheckoutHelper::doErrorRedirect(UnzerConfigHelper::getStringConstant('UNZER_GENERIC_ERROR_MESSAGE'));
             }
             $unzerOrderHelper = new UnzerOrderHelper();
-            $unzerOrderHelper->writePaymentIdAndPaymentMethod($orderId, $paymentId, $_SESSION['unzer_payment_method'] ?? '');
+            $unzerOrderHelper->writePaymentIdAndPaymentMethod($orderId, $payment->getId(), $_SESSION['unzer_payment_method'] ?? '');
 
             $isCharged = false;
             $charge = $payment->getChargeByIndex(0);
@@ -97,7 +104,7 @@ final class unzer
 
     public function after_process()
     {
-        unset($_SESSION['unzer_payment_id']);
+        unset($_SESSION[UnzerConstants::SESSION_KEY_PAY_PAGE_ID]);
         unset($_SESSION['unzer_payment_method']);
     }
 
