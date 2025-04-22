@@ -1,22 +1,27 @@
-<link rel="stylesheet" href="https://static.unzer.com/v1/unzer.css"/>
-<script type="text/javascript" src="https://static.unzer.com/v1/checkout.js"></script>
-<script type="text/javascript" src="{$threatMetrixUrl}" async></script>
+<script type="module" src="https://static-v2.unzer.com/v2/ui-components/index.js"></script>
+<unzer-payment publicKey="{$unzerPublicKey}" locale="{$locale}">
+    <unzer-pay-page payPageId="{$unzerPaymentPageId}" id="unzer-pay-page"></unzer-pay-page>
+</unzer-payment>
 <script>
-    const unzerCheckout = new window.checkout('{$unzerPaymentPageId}', { locale: '{$locale}' });
-    unzerCheckout.init().then(function () {
-        unzerCheckout.open();
+    Promise.all([
+        customElements.whenDefined("unzer-payment"),
+        customElements.whenDefined("unzer-pay-page"),
+    ]).then(() => {
+        const checkoutElement = document.getElementById("unzer-pay-page");
 
-        unzerCheckout.abort(function () {
+        checkoutElement.abort(function () {
             location.href = '{$checkoutPaymentUrl}';
         });
 
-        unzerCheckout.success(function (data) {
-            // handle success event.
+        checkoutElement.success(function (data) {
             window.location.href = '{$checkoutProcessUrl}';
         });
 
-        unzerCheckout.error(function (error) {
+        checkoutElement.error(function (error) {
+            console.log(error);
             location.href = '{$checkoutPaymentUrl}';
         });
+
+        checkoutElement.open();
     });
 </script>

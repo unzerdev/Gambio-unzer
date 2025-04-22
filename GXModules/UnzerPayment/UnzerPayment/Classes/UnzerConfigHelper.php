@@ -84,7 +84,6 @@ class UnzerConfigHelper
 
     public static function getPaymentMethodsConfiguration(): array
     {
-        $configKey = 'MODULE_PAYMENT_UNZER_PAYMENT_METHODS_CONFIGURATION';
         $configValue = self::getConstant('MODULE_PAYMENT_UNZER_PAYMENT_METHODS_CONFIGURATION');
         $return = json_decode($configValue, true);
         return empty($return) ? [] : $return;

@@ -43,6 +43,16 @@ class UnzerApiHelper
         }
     }
 
+    public function fetchPayPage(string $payPageId): ?UnzerSDK\Resources\V2\Paypage
+    {
+        try {
+            return $this->unzer->fetchPaypageV2($payPageId);
+        } catch (Exception $e) {
+            $this->logger->error('fetchPayPage Error', [$e->getMessage(), $e->getTraceAsString()]);
+            return null;
+        }
+    }
+
     public function refund(string $paymentId, float $amount)
     {
         $this->unzer->cancelPayment(

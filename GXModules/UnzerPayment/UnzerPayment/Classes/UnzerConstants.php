@@ -9,11 +9,13 @@ class UnzerConstants {
     const ORDER_TABLE_PAYMENT_METHOD_COLUMN = 'unzer_payment_method';
     const ORDER_TABLE_PAYMENT_METHOD_LABEL_COLUMN = 'unzer_payment_method_label';
     const DISABLED_PAYMENT_METHODS = ['giropay', 'PIS', 'bancontact'];
-    const MODULE_VERSION = '1.0.3';
+    const MODULE_VERSION = '1.1.0';
 
     const LOG_LEVEL_DEBUG = 'debug';
     const LOG_LEVEL_ERROR = 'error';
 
     const META_DATA_SHOP_TYPE = 'Gambio';
     const META_DATA_PLUGIN_TYPE = 'unzerdev/gambio';
+
+    const SESSION_KEY_PAY_PAGE_ID = 'unzer_paypage_id';
 }

@@ -31,10 +31,10 @@ class UnzerCheckoutController extends HttpViewController
         $unzerOrderHelper = new UnzerOrderHelper();
         try {
             $payPage = $unzerOrderHelper->getUnzerPayPage($order, $paymentMethod);
-            $_SESSION['unzer_payment_id'] = $payPage->getPaymentId();
+            $_SESSION[UnzerConstants::SESSION_KEY_PAY_PAGE_ID] = $payPage->getId();
             $data = [
                 'unzerPaymentPageId' => $payPage->getId(),
-                'threatMetrixUrl' => 'https://h.online-metrix.net/fp/tags.js?org_id=363t8kgq&session_id='.$payPage->getAdditionalAttribute('riskData.threatMetrixId'),
+                'unzerPublicKey'=>UnzerConfigHelper::getPublicKey(),
                 'locale' => $_SESSION['language_code'] ?? 'en',
                 'checkoutPaymentUrl' => xtc_href_link('checkout_payment.php', '', 'SSL'),
                 'checkoutProcessUrl' => xtc_href_link('checkout_process.php', '', 'SSL'),
