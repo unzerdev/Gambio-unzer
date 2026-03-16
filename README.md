@@ -11,6 +11,9 @@ Unzer payment integration for Gambio 4.9.x
 
 ## Changelog
 
+# v1.1.1
+* Updated iDEAL Payment naming and logo
+
 # v1.1.0
 * Implementation and migration to Embedded Paypage V2
 
